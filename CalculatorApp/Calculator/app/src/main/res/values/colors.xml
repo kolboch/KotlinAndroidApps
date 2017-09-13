@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="greyLightButton">#cacaca</color>
+    <color name="greyLightButtonPressed">#949494</color>
+    <color name="greyDarkButton">#898989</color>
+    <color name="greyDarkButtonPressed">#979797</color>
+    <color name="orangeButton">#f9aa19</color>
+    <color name="orangeButtonPressed">#ef9b00</color>
+    <color name="borderColor">#686868</color>
+</resources>

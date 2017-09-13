@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context="com.example.kb.calculator.MainActivity">
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@drawable/result_bg"
+        android:ems="10"
+        android:gravity="right|bottom"
+        android:inputType="textPersonName"
+        android:text="0" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+
+            <Button
+                android:id="@+id/button7"
+                style="@style/grey_dark_button"
+                android:text="AC" />
+
+            <Button
+                android:id="@+id/button6"
+                style="@style/grey_dark_button"
+                android:text="+/-" />
+
+            <Button
+                android:id="@+id/button5"
+                style="@style/grey_dark_button"
+                android:text="%" />
+
+            <Button
+                android:id="@+id/button4"
+                style="@style/orange_button"
+                android:text="/" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+
+            <Button
+                android:id="@+id/button11"
+                style="@style/grey_button"
+                android:text="7" />
+
+            <Button
+                android:id="@+id/button10"
+                style="@style/grey_button"
+                android:text="8" />
+
+            <Button
+                android:id="@+id/button9"
+                style="@style/grey_button"
+                android:text="9" />
+
+            <Button
+                android:id="@+id/button8"
+                style="@style/orange_button"
+                android:text="X" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+
+            <Button
+                android:id="@+id/button15"
+                style="@style/grey_button"
+                android:text="4" />
+
+            <Button
+                android:id="@+id/button14"
+                style="@style/grey_button"
+                android:text="5" />
+
+            <Button
+                android:id="@+id/button13"
+                style="@style/grey_button"
+                android:text="6" />
+
+            <Button
+                android:id="@+id/button12"
+                style="@style/orange_button"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+
+            <Button
+                android:id="@+id/button19"
+                style="@style/grey_button"
+                android:text="1" />
+
+            <Button
+                android:id="@+id/button18"
+                style="@style/grey_button"
+                android:text="2" />
+
+            <Button
+                android:id="@+id/button17"
+                style="@style/grey_button"
+                android:text="3" />
+
+            <Button
+                android:id="@+id/button16"
+                style="@style/orange_button"
+                android:text="+" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+
+            <Button
+                android:id="@+id/button3"
+                style="@style/grey_button"
+                android:layout_weight="2"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/button2"
+                style="@style/grey_button"
+                android:layout_weight="1"
+                android:text="." />
+
+            <Button
+                android:id="@+id/button"
+                style="@style/orange_button"
+                android:layout_weight="1"
+                android:text="=" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

@@ -1,0 +1,31 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="calc_button_base" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/button_textSize</item>
+    </style>
+
+    <style name="grey_button" parent="calc_button_base">
+        <item name="android:background">@drawable/button_grey_bg</item>
+    </style>
+
+    <style name="grey_dark_button" parent="calc_button_base">
+        <item name="android:background">@drawable/button_grey_dark_bg</item>
+    </style>
+
+    <style name="orange_button" parent="calc_button_base">
+        <item name="android:background">@drawable/button_orange_bg</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+</resources>

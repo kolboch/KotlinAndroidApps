@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="button_side">
+        65dp
+    </dimen>
+    <dimen name="button_textSize">
+        20sp
+    </dimen>
+    <dimen name="border_light">
+        0.5dp
+    </dimen>
+</resources>
