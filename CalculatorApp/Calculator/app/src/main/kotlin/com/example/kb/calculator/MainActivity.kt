@@ -10,15 +10,21 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private var calcResult: String = "0"
     private var resultNumeric: Double = 0.0
     private var entirePart: String = "0"
-    private var decimalPart: String = "0"
+    private var decimalPart: String = ""
     private var isDecimalInput: Boolean = false
     private var cachedValue: Double = 0.0
+    private val df: DecimalFormat = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
+    private val maxFractionDigits: Int = 10
 
     private val resultBox: EditText by bind(R.id.resultBox)
     private val bttnAC: Button by bind(R.id.bttnAC)
@@ -37,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        df.maximumFractionDigits = maxFractionDigits
         setContentView(R.layout.activity_main)
         setNumbersListener()
         setButtonsWhichNeedCache()
@@ -50,10 +57,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setButtonsWhichNeedCache() {
         bttnPlus.setOnClickListener {
-            performLastOperation()
-            cachedValue = resultNumeric
-            resetResultNumeric()
-            lastOperation = Operator.PLUS
+            arithmeticClickAction(Operator.PLUS)
+        }
+        bttnMinus.setOnClickListener {
+            arithmeticClickAction(Operator.MINUS)
+        }
+        bttnMultiply.setOnClickListener {
+            arithmeticClickAction(Operator.MULTIPLY)
+        }
+        bttnDivide.setOnClickListener {
+            arithmeticClickAction(Operator.DIVIDE)
         }
         bttnEqual.setOnClickListener {
             performLastOperation()
@@ -62,13 +75,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun arithmeticClickAction(operator: String) {
+        performLastOperation()
+        cachedValue = resultNumeric
+        resetResultNumeric()
+        lastOperation = operator
+    }
+
     private fun setOtherButtons() {
         bttnAC.setOnClickListener { resetResults() }
         bttnPlusMinus.setOnClickListener {
             if (resultNumeric != 0.0) {
-                resultNumeric *= -1
+                resultNumeric *= -1.0
             }
-            calcResult = resultNumeric.toString()
+            calcResult = formatResult()
             refreshResult()
         }
         bttnDot.setOnClickListener {
@@ -90,27 +110,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun appendNumber(number: Int) {
         if (isDecimalInput) {
-            appendDecimalNumber(number)
+            decimalPart += number.toString()
         } else {
             entirePart += number.toString()
         }
         calcResult = entirePart + "." + decimalPart
-        Log.v("My class: ", "is decimal input:${isDecimalInput}$entirePart . $decimalPart")
+        Log.v("My class: ", "is decimal input:$isDecimalInput $entirePart . $decimalPart")
         try {
             resultNumeric = calcResult.toDouble()
-            calcResult = resultNumeric.toString()
+            calcResult = formatResult()
         } catch (e: NumberFormatException) {
             calcResult.dropLast(1)
             Toast.makeText(this, R.string.reached_max_number, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun appendDecimalNumber(number: Int) {
-        val decimalNumber = decimalPart.toLong()
-        if (decimalNumber == 0L) {
-            decimalPart = number.toString()
-        } else {
-            decimalPart += number.toString()
         }
     }
 
@@ -122,14 +133,14 @@ class MainActivity : AppCompatActivity() {
         isDecimalInput = false
         resultNumeric = 0.0
         entirePart = "0"
-        decimalPart = "0"
+        decimalPart = ""
     }
 
     private fun resetResults() {
         resultNumeric = 0.0
         cachedValue = 0.0
         resetResultNumeric()
-        calcResult = resultNumeric.toString()
+        calcResult = formatResult()
         resultBox.setText(calcResult)
     }
 
@@ -158,8 +169,12 @@ class MainActivity : AppCompatActivity() {
         }
         lastOperation = Operator.NONE
         cachedValue = 0.0
-        calcResult = resultNumeric.toString()
+        calcResult = formatResult()
         refreshResult()
+    }
+
+    private fun formatResult(): String {
+        return df.format(resultNumeric)
     }
 
     private fun <T : View> Activity.bind(@IdRes res: Int): Lazy<T> {
