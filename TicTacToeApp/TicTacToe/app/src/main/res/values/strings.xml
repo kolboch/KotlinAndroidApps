@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TicTacToe</string>
+
+    <string name="cross_wins">Cross wins!</string>
+    <string name="circle_wins">Circle wins!</string>
+    <string name="draw_message">Game ended with a draw!</string>
 </resources>
