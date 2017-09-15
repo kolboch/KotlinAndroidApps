@@ -70,8 +70,12 @@ class MainActivity : AppCompatActivity() {
         }
         bttnEqual.setOnClickListener {
             performLastOperation()
-            resetResultNumeric()
+            resetInput()
             lastOperation = Operator.NONE
+        }
+        bttnPercentage.setOnClickListener {
+            resultNumeric = cachedValue * resultNumeric / 100
+            performLastOperation()
         }
     }
 
@@ -115,7 +119,6 @@ class MainActivity : AppCompatActivity() {
             entirePart += number.toString()
         }
         calcResult = entirePart + "." + decimalPart
-        Log.v("My class: ", "is decimal input:$isDecimalInput $entirePart . $decimalPart")
         try {
             resultNumeric = calcResult.toDouble()
             calcResult = formatResult()
@@ -129,11 +132,15 @@ class MainActivity : AppCompatActivity() {
         resultBox.setText(calcResult)
     }
 
-    private fun resetResultNumeric() {
-        isDecimalInput = false
-        resultNumeric = 0.0
+    private fun resetInput() {
         entirePart = "0"
         decimalPart = ""
+        isDecimalInput = false
+    }
+
+    private fun resetResultNumeric() {
+        resultNumeric = 0.0
+        resetInput()
     }
 
     private fun resetResults() {
