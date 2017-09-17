@@ -1,5 +1,6 @@
 package com.example.kb.tictactoe
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -9,11 +10,16 @@ import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
+import android.content.Intent
+import android.net.ConnectivityManager
+import com.google.firebase.auth.FirebaseUser
 
 
 class LoginActivity : AppCompatActivity() {
 
-    //TODO handle checking connection
+    val EMAIL_KEY = "user email key"
+    val USERNAME_KEY = "username key"
+    val USER_ID_KEY = "user id key"
 
     private val LOG_TAG: String = this.javaClass.simpleName
     private lateinit var mAuth: FirebaseAuth
@@ -41,10 +47,13 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setUpLogInButton() {
         confirm_button.setOnClickListener {
-            if (have_account_checkbox.isChecked) {
-                loginToFirebase(email_box.text.toString(), password_box.text.toString())
+            if (hasConnection()) {
+                when {
+                    have_account_checkbox.isChecked -> loginToFirebase(email_box.text.toString(), password_box.text.toString())
+                    else -> signUpToFirebase(email_box.text.toString(), password_box.text.toString())
+                }
             } else {
-                signUpToFirebase(email_box.text.toString(), password_box.text.toString())
+                showNoConnectionSnackbar()
             }
         }
     }
@@ -69,9 +78,12 @@ class LoginActivity : AppCompatActivity() {
                     // If sign in fails, display a message to the user. If sign in succeeds
                     // the auth state listener will be notified and logic to handle the
                     // signed in user can be handled in the listener.
-                    if (!task.isSuccessful) {
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, R.string.success_log_in, Toast.LENGTH_SHORT).show()
+                        loadMainActivity(mAuth.currentUser)
+                    } else {
                         Log.w(LOG_TAG, "signInWithEmail:failed", task.exception)
-                        Toast.makeText(this, R.string.auth_failed, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
                     }
                 }
     }
@@ -87,10 +99,11 @@ class LoginActivity : AppCompatActivity() {
                     // If sign in fails, display a message to the user. If sign in succeeds
                     // the auth state listener will be notified and logic to handle the
                     // signed in user can be handled in the listener.
-                    if (!task.isSuccessful) {
-                        Toast.makeText(this, R.string.signup_failed, Toast.LENGTH_SHORT).show()
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, R.string.signup_success, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
                     }
-                    // ...
                 }
     }
 
@@ -105,6 +118,23 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadMainActivity(user: FirebaseUser?) {
+        val intent = Intent(this, MainActivity::class.java)
+        // Name, email address, and profile photo Url
+        if (user != null) {
+            val name = user.displayName
+            val email = user.email
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getToken() instead.
+            val uid = user.uid
+            intent.putExtra(USERNAME_KEY, name)
+            intent.putExtra(EMAIL_KEY, email)
+            intent.putExtra(USER_ID_KEY, uid)
+            startActivity(intent)
+        }
+    }
+
     private fun showIncompleteDataSnackbar() {
         val parentView: View = findViewById(android.R.id.content)
         parentView.snack(R.string.incomplete_data, Snackbar.LENGTH_INDEFINITE) {
@@ -112,6 +142,15 @@ class LoginActivity : AppCompatActivity() {
                 dismiss()
             }
         }
+    }
+
+    private fun showNoConnectionSnackbar() {
+        Toast.makeText(this, R.string.no_internet_connectivity, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun hasConnection(): Boolean {
+        val connectivityManager = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo.isConnected
     }
 
     override fun onStart() {

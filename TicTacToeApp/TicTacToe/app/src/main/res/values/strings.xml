@@ -15,4 +15,7 @@
     <string name="sign_up">Sign up</string>
     <string name="got_it">GOT IT!</string>
     <string name="incomplete_data">Please fill missing data.</string>
+    <string name="no_internet_connectivity">No Internet connectivity!!</string>
+    <string name="signup_success">Successfully signed up!</string>
+    <string name="success_log_in">Successful authentication!</string>
 </resources>
